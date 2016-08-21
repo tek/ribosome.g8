@@ -2,12 +2,11 @@ from pathlib import Path
 
 import neovim
 
-from tryp import List
+from amino import List
 
-from trypnv import (command, NvimStatePlugin, msg_command, json_msg_command,
-                    NvimFacade)
+from ribosome import command, NvimStatePlugin, msg_command, json_msg_command
 
-from $name$.plugins.core import StageI
+from $name$.plugins.core.message import StageI, Echo
 from $name$.main import $name_camel$
 from $name$.logging import Logging
 
@@ -15,9 +14,13 @@ from $name$.logging import Logging
 class $name_camel$NvimPlugin(NvimStatePlugin, Logging):
 
     def __init__(self, vim: neovim.Nvim) -> None:
-        super().__init__(NvimFacade(vim, '$name$'))
+        super().__init__(vim)
         self.$name$ = None  # type: $name_camel$
         self._post_initialized = False
+
+    @property
+    def name(self):
+        return '$name$'
 
     def state(self):
         return self.$name$
@@ -50,5 +53,9 @@ class $name_camel$NvimPlugin(NvimStatePlugin, Logging):
             self.vim.set_pvar('started', True)
         else:
             self.log.error('$name$ startup failed')
+
+    @msg_command(Echo)
+    def $name$_echo(self):
+        pass
 
 __all__ = ('$name_camel$NvimPlugin',)

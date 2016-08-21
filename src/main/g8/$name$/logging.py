@@ -1,20 +1,20 @@
-import tryp.logging
-from trypnv.logging import trypnv_logger
+import amino.logging
+from ribosome.logging import ribosome_logger
 
-from tryp.lazy import lazy
+from amino.lazy import lazy
 
 
-log = $name$_root_logger = trypnv_logger('$name$')
+log = $name$_root_logger = ribosome_logger('$name$')
 
 
 def $name$_logger(name: str):
     return $name$_root_logger.getChild(name)
 
 
-class Logging(tryp.logging.Logging):
+class Logging(amino.logging.Logging):
 
     @lazy
-    def _log(self) -> tryp.logging.Logger:
+    def _log(self) -> amino.logging.Logger:
         return $name$_logger(self.__class__.__name__)
 
 __all__ = ('$name$_logger', 'Logging')

@@ -7,13 +7,13 @@ setup(
     name='$name$',
     description='$desc$',
     version=version,
-    author='Torsten Schmits',
-    author_email='torstenschmits@gmail.com',
+    author='$author$',
+    author_email='$email$',
     license='MIT',
-    url='https://github.com/tek/$name$',
+    url='$url$',
     packages=find_packages(
         exclude=['unit', 'unit.*', 'integration', 'integration.*']),
     install_requires=[
-        'tryp-nvim',
+        'ribosome',
     ]
 )

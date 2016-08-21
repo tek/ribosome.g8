@@ -1,6 +1,6 @@
 from $name$.logging import Logging
-from trypnv.data import Data
-from trypnv.record import dfield
+from ribosome.data import Data
+from ribosome.record import dfield
 
 
 class Env(Data, Logging):

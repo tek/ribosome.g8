@@ -3,15 +3,15 @@ from pathlib import Path
 
 from fn import _
 
-from tryp.test import fixture_path, temp_dir
+from amino.test import fixture_path, temp_dir
 
-from tryp import List, Map, Just, Maybe
-from trypnv.test import IntegrationSpec as TrypnvIntegrationSpec
-from trypnv.test import VimIntegrationSpec as TrypnvVimIntegrationSpec
-from trypnv import NvimFacade
+from amino import List, Map, Just, Maybe, Right
+from ribosome import NvimFacade
+from ribosome.test import PluginIntegrationSpec
 
 from $name$.logging import Logging
 from $name$.test import Spec
+from $name$.nvim_plugin import $name_camel$NvimPlugin
 
 
 class IntegrationCommon(Spec):
@@ -31,53 +31,31 @@ class IntegrationCommon(Spec):
         self._cd_back()
 
 
-class IntegrationSpec(TrypnvIntegrationSpec, IntegrationCommon):
-    pass
+class IntegrationSpec(PluginIntegrationSpec, IntegrationCommon, Logging):
 
-
-class VimIntegrationSpec(TrypnvVimIntegrationSpec, IntegrationCommon, Logging):
-
-    def setup(self):
-        super().setup()
+    def _pre_start(self):
+        super()._pre_start()
         self.vim.cmd_sync('$name_camel$Start')
         self.vim.cmd('$name_camel$PostStartup')
         self._pvar_becomes('started', True)
 
-    def _nvim_facade(self, vim):
-        return NvimFacade(vim, '$name$')
+    @property
+    def plugin_class(self):
+        return Right($name_camel$NvimPlugin)
 
-    def _pre_start_neovim(self):
-        self._setup_plugin()
+    @property
+    def _prefix(self):
+        return '$name$'
 
     def _post_start_neovim(self):
+        super()._post_start_neovim()
         self._set_vars()
 
     def _set_vars(self):
-        pass
-
-    def _setup_plugin(self):
-        self._rplugin_path = fixture_path(
-            'nvim_plugin', 'rplugin', 'python3', '$name$_nvim.py')
-        self._handlers = [
-            {
-                'sync': 1,
-                'name': '$name_camel$Start',
-                'type': 'command',
-                'opts': {'nargs': 0}
-            },
-            {
-                'sync': 0,
-                'name': '$name_camel$PostStartup',
-                'type': 'command',
-                'opts': {'nargs': 0}
-            },
-        ]
+        self.vim.set_pvar('plugins', self._plugins)
 
     @property
     def _plugins(self):
         return List()
-
-    def _pre_start(self):
-        pass
 
 __all__ = ('IntegrationSpec', 'VimIntegrationSpec')
