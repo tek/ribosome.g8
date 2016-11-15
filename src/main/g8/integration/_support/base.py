@@ -52,7 +52,7 @@ class IntegrationSpec(PluginIntegrationSpec, IntegrationCommon, Logging):
         self._set_vars()
 
     def _set_vars(self):
-        self.vim.set_pvar('plugins', self._plugins)
+        self.vim.vars.set_p('plugins', self._plugins)
 
     @property
     def _plugins(self):

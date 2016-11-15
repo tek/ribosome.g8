@@ -40,7 +40,7 @@ class $name_camel$NvimPlugin(NvimStatePlugin, Logging):
 
     @command(sync=True)
     def $name$_start(self):
-        plugins = self.vim.pl('plugins') | List()
+        plugins = self.vim.vars.pl('plugins') | List()
         self.$name$ = $name_camel$(self.vim.proxy, plugins)
         self.$name$.start()
         self.$name$.wait_for_running()
@@ -50,7 +50,7 @@ class $name_camel$NvimPlugin(NvimStatePlugin, Logging):
     def $name$_post_startup(self):
         self._post_initialized = True
         if self.$name$ is not None:
-            self.vim.set_pvar('started', True)
+            self.vim.vars.set_p('started', True)
         else:
             self.log.error('$name$ startup failed')
 
