@@ -1,0 +1,12 @@
+before_script:
+  - export PATH=~/.conscript/bin:$PATH
+  - curl -o setup.sh https://raw.githubusercontent.com/foundweekends/conscript/master/setup.sh
+  - bash setup.sh || true
+  - cs foundweekends/giter8
+  - g8 file://. --name=tryp --force
+  - cd tryp
+  - pip install --upgrade -r requirements.txt
+
+test:
+  script:
+    - spec integration
