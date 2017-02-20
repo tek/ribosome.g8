@@ -7,31 +7,14 @@ from amino.test import fixture_path, temp_dir
 
 from amino import List, Map, Just, Maybe, Right
 from ribosome import NvimFacade
-from ribosome.test import PluginIntegrationSpec
+from ribosome.test.integration.spec import (PluginIntegrationSpec,
+                                            VimIntegrationSureHelpers)
 
 from $name$.logging import Logging
-from $name$.test import Spec
 from $name$.nvim_plugin import $name_camel$NvimPlugin
 
 
-class IntegrationCommon(Spec):
-
-    def setup(self):
-        self.cwd = Maybe.from_call(Path.cwd, exc=IOError)
-        super().setup()
-
-    def _cd_back(self):
-        try:
-            self.cwd.map(str).foreach(os.chdir)
-        except Exception as e:
-            self.log.error('error changing back to project root: {}'.format(e))
-
-    def teardown(self):
-        super().teardown()
-        self._cd_back()
-
-
-class IntegrationSpec(PluginIntegrationSpec, IntegrationCommon, Logging):
+class IntegrationSpec(PluginIntegrationSpec, VimIntegrationSureHelpers):
 
     def _pre_start(self):
         super()._pre_start()
